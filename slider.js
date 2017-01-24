@@ -7,6 +7,7 @@ window.onload = function() {
   var pauseButton = document.querySelector('#pause');
   var prevButton = document.querySelector('#prev');
   var nextButton = document.querySelector('#next');
+  var controls = document.querySelectorAll('.controls');
 
   function nextSlide() {
     goToSlide(currentSlide + 1);
@@ -51,5 +52,13 @@ window.onload = function() {
     stopSlideshow();
     nextSlide();
   }
+
+  controls.forEach(function(item){
+    item.style.display = 'block';
+  });
+
+  slides.forEach(function(item){
+    item.style.position = 'absolute';
+  })
 
 };
