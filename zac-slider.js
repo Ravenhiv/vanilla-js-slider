@@ -3,6 +3,7 @@ function ZacSlider(options) {
   this.slider = null;
   this._wrapSlider(options.elem);
 
+  this.controls = null;
   this.delay = options.delay || null;
   this.slides = this.slider.querySelectorAll('.slide');
   this.currentSlide = 0;
@@ -11,23 +12,53 @@ function ZacSlider(options) {
   }
   this.isPlaying = true;
 
-  this.pauseButton = document.querySelector('#pause');
-  this.prevButton = document.querySelector('#prev');
-  this.nextButton = document.querySelector('#next');
-  this.controls = document.querySelectorAll('.controls');
+  this.pause = options.pause;
+  if (this.pause) {
+    if (!this.controls) this.createControlsContainer();
+    this.createControlsPause();
+  };
 
-  this.controls.forEach(function(item){
-    item.style.display = 'block';
-  });
+  this.prevnext = options.prevnext;
+  if (this.prevnext) {
+    if (!this.controls) this.createControlsContainer();
+    this.createControlsPrevNext();
+  };
 
   this.slides.forEach(function(item){
     item.style.position = 'absolute';
   });
 
-  this.nextButton.onclick = this.onNext.bind(this);
-  this.prevButton.onclick = this.onPrev.bind(this);
-  this.pauseButton.onclick = this.onPauseButton.bind(this);
 };
+
+//Create controls
+ZacSlider.prototype.createControlsContainer = function() {
+  var container = document.createElement('div');
+  container.className = 'controls';
+  this.controls = this.slider.appendChild(container);
+  this.controls.style.display = 'block';
+}
+
+ZacSlider.prototype.createControlsPause = function() {
+  var pause = document.createElement('button');
+  pause.className = 'pause';
+  pause.innerHTML = 'Stop';
+  this.pauseButton = this.controls.appendChild(pause);
+  this.pauseButton.onclick = this.onPauseButton.bind(this);
+}
+
+ZacSlider.prototype.createControlsPrevNext = function() {
+  var prev = document.createElement('button');
+  prev.className = 'prev';
+  prev.innerHTML = '<';
+  this.prevButton = this.controls.appendChild(prev);
+  this.prevButton.onclick = this.onPrev.bind(this);
+
+  var next = document.createElement('button');
+  next.className = 'next';
+  next.innerHTML = '>';
+  this.nextButton = this.controls.appendChild(next);
+  this.nextButton.onclick = this.onNext.bind(this);
+}
 
 //Wrapper
 ZacSlider.prototype._wrapSlider = function(elem) {
