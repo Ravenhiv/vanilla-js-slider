@@ -4,7 +4,8 @@ window.onload = function() {
     elem: document.querySelector('.slider'),
     delay: 2000,
     pause: true,
-    prevnext: true
+    prevnext: true,
+    width: 800
   })
 
 };

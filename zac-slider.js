@@ -11,6 +11,7 @@ function ZacSlider(options) {
     this.slideInterval = setInterval(this._nextSlide.bind(this), this.delay);
   }
   this.isPlaying = true;
+  this.width = options.width || 'auto';
 
   this.pause = options.pause;
   if (this.pause) {
@@ -24,10 +25,28 @@ function ZacSlider(options) {
     this.createControlsPrevNext();
   };
 
+  this.slidesStyles();
+
+};
+
+//Styles for slides
+ZacSlider.prototype.slidesStyles = function() {
+  function widthType(width) {
+    if (isNaN(width)) {
+      return width;
+    } else {
+      return width + 'px';
+    }
+  };
+
   this.slides.forEach(function(item){
     item.style.position = 'absolute';
-  });
+    item.style.width = widthType(this.width);
+  }, this);
 
+  var ul = this.slider.querySelector('ul');
+  ul.style.width = widthType(this.width);
+  ul.style.height = this.slides[0].offsetHeight + 'px';
 };
 
 //Create controls
@@ -41,7 +60,7 @@ ZacSlider.prototype.createControlsContainer = function() {
 ZacSlider.prototype.createControlsPause = function() {
   var pause = document.createElement('button');
   pause.className = 'pause';
-  pause.innerHTML = 'Stop';
+  pause.innerHTML = '&#9744;';
   this.pauseButton = this.controls.appendChild(pause);
   this.pauseButton.onclick = this.onPauseButton.bind(this);
 }
@@ -78,13 +97,13 @@ ZacSlider.prototype.onPauseButton = function() {
 };
 
 ZacSlider.prototype.playSlideshow = function() {
-  this.pauseButton.innerHTML = 'Stop';
+  this.pauseButton.innerHTML = '&#9744;';
   this.isPlaying = true;
   this.slideInterval = setInterval(this._nextSlide.bind(this), this.delay);
 };
 
 ZacSlider.prototype.stopSlideshow = function() {
-  this.pauseButton.innerHTML = 'Play';
+  this.pauseButton.innerHTML = '&#10148;';
   this.isPlaying = false;
   clearInterval(this.slideInterval);
 };
